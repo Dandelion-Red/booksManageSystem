@@ -81,7 +81,7 @@
             key: 'rbtime'
           },
           {
-            title: '是否归还',
+            title: '状态',
             key: 'condi'
           },
           {
@@ -125,7 +125,7 @@
       }
     },
     mounted(){
-      //this.request(1);
+      this.request(1);
     },
     methods: {
       handleSubmit(account) {
@@ -187,10 +187,11 @@
             obj.rbtime = e.Rbtime1
             obj.backtime = e.Rbtime2
             obj.penalty = e.Penalty
+            obj.condi = e.Condi
             // var time = new Date().getTime();
-            if(  !e.Rbtime2 ){
-              obj.condi = '未归还'
-            }
+            // if(  !e.Rbtime2 ){
+            //   obj.condi = '未归还'
+            // }
             //else{
             //   var delayDay = (nowtime-e.Rbtime1).days
             //   obj.condi = '已超期'

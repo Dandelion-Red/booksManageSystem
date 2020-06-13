@@ -4,7 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Global from './components/util/Global'
+// import locale from 'element-ui/lib/locale/lang/zh-CN'
 
+// import Moment from 'moment'
+// Vue.prototype.moment = Moment
 Vue.prototype.GLOBAL = Global
 Vue.config.productionTip = false
 Vue.http.options.emulateJSON = true

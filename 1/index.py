@@ -462,12 +462,13 @@ def render_borrowHistory(rid):
     if rid != '':
         res = borrowReconds(rid)
         reader = readerQuery(rid=rid)
-        ans_data = {
-            'borrowrecords': res,
-            'status': 'ok',
-            'readername': reader['Rname']
-        }
-        return jsonify(ans_data)
+        if res and reader:
+            ans_data = {
+                'borrowrecords': res,
+                'status': 'ok',
+                'readername': reader[0]['Rname']
+            }
+            return jsonify(ans_data)
     ans_data = {
         'borrowrecords': '',
         'status': 'fail',
@@ -531,9 +532,9 @@ def readerQuery(rid='', rname=''):
             else:
                 reader['Normal'] = '异常'
             reader['Remark'] = note
-            # readers.append(copy.deepcopy(reader))
-        print("readers:", reader)
-        return reader
+            readers.append(copy.deepcopy(reader))
+        print("readers:", readers)
+        return readers
     elif rname != '':
         res = accordingTorname(rname=rname)
         print("readers:", res)
@@ -560,6 +561,7 @@ def readerQuery(rid='', rname=''):
 
 def borrowReconds(rid='', bid='', botime='', rbtime1='', rbtime2=''):
     from dboperation.dboperation import queryborrowRecords, queryAccordingToID
+    import datetime
     result = queryborrowRecords(rid=rid, bid=bid, botime=botime, rbtime1=rbtime1, rbtime2=rbtime2)
     print('borrowReconds函数下的result')
     print('rid:' + rid)
@@ -577,8 +579,14 @@ def borrowReconds(rid='', bid='', botime='', rbtime1='', rbtime2=''):
         temp2 = queryAccordingToID('pbook', temp1.ISBN)
         rec['ISBN'] = temp2.ISBN
         rec['Bname'] = temp2.Bname
-        # rec['Num'] = num
-        # print(rec)
+        if not rec['Rbtime2']:
+            rec['Condi']='未归还'
+            if rec['Rbtime1'] > datetime.datetime.now():
+                rec['Condi'] = '已超期'
+            rec['Rbtime2'] =rec['Condi']
+        else:
+            if rec['Penalty']:
+                rec['Condi'] = '罚金'+str(rec['Penalty'])
         ans.append(copy.deepcopy(rec))
         # print(type(rec))
     print("================================================================================")
