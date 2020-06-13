@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if borrowing|length > 10 %}
+
+        <table border="1">
+
+            <caption>已达借阅上限(10本),以下为您所借图书，请归还部分再借</caption>
+
+            <tr>
+                <td>序号</td>
+                <td>图书名</td>
+                <td>图书号</td>
+                <td>IBSN</td>
+                <td>借出时间</td>
+                <td>应还时间</td>
+            </tr>
+            {% for recond in borrowing %}
+
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ recond['Bname'] }}</td>
+                        <td>{{ recond['BID'] }}</td>
+                        <td>{{ recond['ISBN'] }}</td>
+                        <td>{{ recond['Botime'] }}</td>
+                        <td>{{ recond['Rbtime1'] }}</td>
+                    </tr>
+
+
+            {% endfor %}
+
+        </table>
+
+    {% endif %}
+
+    {#    ===============================================================================================   #}
+
+    {% if hasDue %}
+
+        <table border="1">
+
+            <caption>存在超期图书，请归还再借</caption>
+
+            <tr>
+                <td>序号</td>
+                <td>图书名</td>
+                <td>图书号</td>
+                <td>IBSN</td>
+                <td>借出时间</td>
+                <td>应还时间</td>
+            </tr>
+            {% for recond in hasDue %}
+
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ recond['Bname'] }}</td>
+                        <td>{{ recond['BID'] }}</td>
+                        <td>{{ recond['ISBN'] }}</td>
+                        <td>{{ recond['Botime'] }}</td>
+                        <td>{{ recond['Rbtime1'] }}</td>
+                    </tr>
+
+
+            {% endfor %}
+
+        </table>
+
+    {% endif %}
+
+    {#  =========================================================================================  #}
+    {% if hasPenalty %}
+
+        <table border="1">
+
+            <caption>存在罚金，请缴纳后再借</caption>
+
+            <tr>
+                <td>序号</td>
+                <td>图书名</td>
+                <td>图书号</td>
+                <td>IBSN</td>
+                <td>借出时间</td>
+                <td>应还时间</td>
+                <td>归还时间</td>
+                <td>罚金</td>
+            </tr>
+            {% for recond in hasDue %}
+
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ recond['Bname'] }}</td>
+                        <td>{{ recond['BID'] }}</td>
+                        <td>{{ recond['ISBN'] }}</td>
+                        <td>{{ recond['Botime'] }}</td>
+                        <td>{{ recond['Rbtime1'] }}</td>
+                        <td>{{ recond['Rbtime2'] }}</td>
+                        <td style="color:red">{{ recond['Penalty'] }}</td>
+                    </tr>
+
+
+            {% endfor %}
+
+        </table>
+
+    {% endif %}
+
+{% endblock %}

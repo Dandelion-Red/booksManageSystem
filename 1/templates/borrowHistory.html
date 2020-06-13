@@ -1,0 +1,64 @@
+
+{#已经借阅且归还的信息#}
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="/render_borrowHistory" method="post">
+        读者ID<input type="text" name="rid" id="rid" autocomplete="off"   {% if rid %} value="{{ rid }}" {% endif %}
+               required><br>
+        <input type="submit" name="submit" value="查询">
+    </form>
+    {% if info %}
+
+        <table border="1">
+
+            <caption>借阅历史</caption>
+
+            <tr>
+                <td>序号</td>
+                <td>图书名</td>
+                <td>图书号</td>
+                <td>IBSN</td>
+
+                <td>借出时间</td>
+
+                <td>归还时间</td>
+                <td>应还时间</td>
+                <td>罚金</td>
+                <td>测试</td>
+
+            </tr>
+            {% for recond in info %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ recond['Bname'] }}</td>
+                    <td>{{ recond['BID'] }}</td>
+                    <td>{{ recond['ISBN'] }}</td>
+                    <td>{{ recond['Botime'] }}</td>
+                    {% if recond['Rbtime2'] %}
+                        <td>{{ recond['Rbtime2'] }}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    <td>{{ recond['Rbtime1'] }}</td>
+                    {% if recond['Penalty'] == 0 %}
+                        <td></td>
+                    {% else %}
+                        <td style="color:red" >{{ recond['Penalty'] }}</td>
+                    {% endif %}
+           <td>     <a href="{{ url_for('updateRecord',bid='',rid='',dt=recond['Botime']  ) }}" >修改</a></td>
+
+                </tr>
+
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <p> 没有查询到结果</p>
+
+    {% endif %}
+
+
+
+{% endblock %}

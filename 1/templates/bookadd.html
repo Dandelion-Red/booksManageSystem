@@ -1,0 +1,61 @@
+{#增加图书、书目界面#}
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="post" action="/bookadd">
+        图书号<input type="text" id="bid" name="bid" autocomplete="off" required> <br>
+        图书名<input type="text" id="bname" name="bname" autocomplete="off" required> <br>
+        ISBN<input type="text" id="isbn" name="isbn" autocomplete="off" required> <br>
+        架位<input type="text" id="loc" name="loc" autocomplete="off" required> <br>
+        作者<input type="text" id="author" name="author" autocomplete="off" required> <br>
+        出版社<input type="text" id="pub" name="pub" autocomplete="off" required> <br>
+        状态<input type="text" id="sta" name="sta" autocomplete="off" required placeholder="选择状态" list="liststa"> <br>
+        <datalist id="liststa">
+            <option value="在架上">
+            <option value="不外借">
+        </datalist>
+        出版日期<input type="date" required id="pyear" name="pyear" autocomplete="off"> <br>
+        经办人<input type="text" id="per" required name="per" autocomplete="off"> <br>
+        <input type="submit" value="提交"> <br>
+
+    </form>
+
+    {% if books %}
+        <table border="1">
+            <caption>增加成功的图书信息</caption>
+            <tr>
+                <td>序号</td>
+                <td>图书名</td>
+                <td>图书号</td>
+                <td>ISBN</td>
+                <td>状态</td>
+                <td>架位</td>
+                <td>作者</td>
+                <td>出版社</td>
+                <td>出版日期</td>
+                <td>经办人</td>
+                <td>操作</td>
+            </tr>
+            {% for book in books %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ book['Bname'] }}</td>
+                    <td>{{ book['BID'] }}</td>
+                    <td>{{ book['ISBN'] }}</td>
+                    <td>{{ book['Sta'] }}</td>
+                    <td>{{ book['Loc'] }}</td>
+                    <td>{{ book['Author'] }}</td>
+                    <td>{{ book['Pub'] }}</td>
+                    <td>{{ book['Pyear'] }}</td>
+                    <td>{{ book['Per'] }}</td>
+                    <td><a href="{{ url_for('showBookInfo',bid=book['BID']) }}">修改</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+            {% else %}
+                <p style="color: red">没有添加信息</p>
+    {% endif %}
+
+{% endblock %}

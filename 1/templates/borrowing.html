@@ -1,0 +1,47 @@
+{# 已经借阅但未归还的图书信息 #}
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="/render_borrowReconds" method="post">
+        读者ID<input type="text" name="rid" id="rid" autocomplete="off"   {% if rid %} value="{{ rid }}" {% endif %}
+               required><br>
+        <input type="submit" name="submit" value="查询">
+    </form>
+    {% if info %}
+
+        <table border="1">
+
+            <caption>正在借阅的图书</caption>
+
+            <tr>
+                <td>序号</td>
+                <td>图书名</td>
+                <td>图书号</td>
+                <td>IBSN</td>
+                <td>借出时间</td>
+                <td>应还时间</td>
+            </tr>
+            {% for recond in info %}
+                {% if not recond['Rbtime2'] %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ recond['Bname'] }}</td>
+                        <td>{{ recond['BID'] }}</td>
+                        <td>{{ recond['ISBN'] }}</td>
+                        <td>{{ recond['Botime'] }}</td>
+                        <td>{{ recond['Rbtime1'] }}</td>
+                    </tr>
+
+                {% endif %}
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <p> 没有查询到结果</p>
+
+    {% endif %}
+
+
+
+{% endblock %}

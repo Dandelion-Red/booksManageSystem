@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>图书信息修改</title>
+{% endblock %}
+
+{% block content %}
+    {% if record %}
+
+        <form action="/bookupdate" method="post">
+
+
+            图书名<input type="text" name="bname" id="bname"  {% if record['Bname'] %}
+                      value="{{ record['Bname'] }}" {% endif %}
+                      required><br>
+            图书号 <input type="text" name="newbid" id="newbid"  {% if record['BID'] %}
+                       value="{{ record['BID'] }}" {% endif %}
+                       required><br>
+            <input type="text" name="bid" id="bid"  {% if record['BID'] %} value="{{ record['BID'] }}" {% endif %}
+                   required hidden><br>
+            ISBN<input type="text" name="newisbn" id="newisbn"  {% if record['ISBN'] %}
+                       value="{{ record['ISBN'] }}" {% endif %}
+                       required><br>
+            <input type="text" name="isbn" id="isbn"  {% if record['ISBN'] %} value="{{ record['ISBN'] }}" {% endif %}
+                   required hidden><br>
+            状态<input type="text" name="sta" list="liststa" id="sta"  {% if record['Sta'] %}
+                     value="{{ record['Sta'] }}" {% endif %}
+                     required><br>
+            <datalist id="liststa">
+                <option value="在架上">
+                <option value="不外借">
+            </datalist>
+            架位<input type="text" name="loc" id="loc"  {% if record['Loc'] %} value="{{ record['Loc'] }}" {% endif %}
+                     required><br>
+            作者<input type="text" name="author" id="author"  {% if record['Author'] %}
+                     value="{{ record['Author'] }}" {% endif %}
+                     required><br>
+            出版社<input type="text" name="pub" id="pub"  {% if record['Pub'] %} value="{{ record['Pub'] }}" {% endif %}
+                      required><br>
+            出版日期<input type="date" name="pyear" id="pyear"  {% if record['Pyear'] %}
+                       value="{{ record['Pyear'] }}" {% endif %}
+                       required><br>
+            经办人<input type="text" name="per" id="per"  {% if record['Per'] %} value="{{ record['Per'] }}" {% endif %}
+                      required><br>
+            <input type="submit" name="submit" value="查询">
+        </form>
+
+    {% endif %}
+
+    {% if result %}
+        修改后结果如下<br>
+        图书名     {{ result.Bname }}<br>
+        图书号     {{ result.BID }}<br>
+        ISBN       {{ result.ISBN }}<br>
+        状态        {{ result.Sta }}<br>
+        架位          {{ result.Loc }}<br>
+        作者        {{ result.Author }}<br>
+        出版社       {{ result.Pub }}<br>
+        出版日期      {{ result.Pyear }}<br>
+        经办人        {{ result.Per }}<br>
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post" action="/render_readerQuery">
+        <label for="rid">读者ID</label>
+        <input type="text" name="rid" id="rid" autocomplete="off"   {% if info %} value="{{ info.RID }}" {% endif %}
+               required><br>
+        {#        <label for="rname">读者姓名</label>#}
+        {#        <input type="text" name="rname" id="rname" autocomplete="off" required ><br>#}
+        <input type="submit" name="sbm" id="sbm" value="查询">
+    </form>
+
+
+    <script>
+        function edit() {
+            alert("现在您可以编辑读者信息!");
+            document.getElementById("submit").hidden = false;
+            {#document.getElementById("rpwd").hidden = false;#}
+            document.getElementById("rname").readOnly = false;
+            document.getElementById("rtel").readOnly = false;
+            document.getElementById("rem").readOnly = false;
+            document.getElementById("rsta").readOnly = false;
+            document.getElementById("rnote").readOnly = false;
+            {#document.getElementById("id").hidden = false;#}
+            {#document.getElementById("id").readOnly = false;#}
+        }
+
+        function showpwd() {
+            alert("密码框已经显示")
+            document.getElementById("rpwd").hidden = false;
+            document.getElementById("lpwd").hidden = false;
+        }
+    </script>
+
+
+{% for message in get_flashed_messages() %}
+    <p style="color: red">{{ message }}</p>
+{% endfor %}
+
+    {% if info %}
+
+        <form method="post" action="/readerupdate">
+
+
+            <label for="rname">姓名</label>
+            <input type="text" name="rname" id="rname" autocomplete="off" {% if info %}
+                   value="{{ info.Rname }}" {% endif %} readonly="readonly" required><br>
+
+
+            <label for="id">ID</label>
+            <input type="text" name="id" id="id" autocomplete="off"   {% if info %}
+                   value="{{ info.RID }}" {% endif %} readonly="readonly" required><br>
+
+
+            <label for="rpwd" id="lpwd" hidden="hidden">密码</label>
+            <input type="text" name="rpwd" id="rpwd" autocomplete="off" placeholder="不修改密码可不填写" hidden="hidden"
+                   ><br>
+
+
+            <label for="rtel">电话</label>
+            <input type="text" name="rtel" id="rtel" autocomplete="off"  {% if info %}
+                   value="{{ info.Rtel }}" {% endif %}  readonly="readonly" required><br>
+
+            <label for="rem">邮箱</label>
+            <input type="text" name="rem" id="rem" autocomplete="off"  {% if info %}
+                   value="{{ info.Rem }}" {% endif %} readonly="readonly" required><br>
+
+            <label for="rsta">状态</label>
+            <input type="text" name="rsta" id="rsta" autocomplete="off"  {% if info %}
+                   value="{{ info.Normal }}" {% endif %} readonly="readonly" required><br>
+
+
+            <label for="rnote">备注</label>
+
+            <input type="button" name="edit" onclick="location.href='{{ url_for('readerNote',rid= info.RID) }}'"
+                   value="{{ info.Remark }}"><br>
+
+            <input type="submit" name="submit" id="submit" hidden="hidden" value="保存">
+            <br><br><br>
+
+
+        </form>
+
+
+
+        <button onclick="edit()">编辑</button>
+        <br>
+        <br>
+        <button onclick="showpwd()">显示密码框</button>
+
+
+
+    {% endif %}
+
+{% endblock %}

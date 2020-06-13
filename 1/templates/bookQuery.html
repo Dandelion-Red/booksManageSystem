@@ -1,0 +1,51 @@
+{#查询图书界面，可根据ISBN或这图书BID查询#}
+
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post" action="/render_bookQuery">
+        <label for="bid">图书编号</label>
+        <input type="text" name="bid" id="bid" autocomplete="off">
+        <label for="isbn">ISBN</label>
+        <input type="text" name="isbn" id="isbn" autocomplete="off">
+        <input type="radio" name="detail" value="bid" required autocomplete="on" >图书编号 <br>
+        <input type="radio" name="detail" value="isbn" required  >ISBN <br>
+        <input type="submit" name="submit" value="查询">
+    </form>
+    {% if books %}
+        <table border="1">
+            <caption>图书信息</caption>
+            <tr>
+                <td>序号</td>
+                <td>图书名</td>
+                <td>图书号</td>
+                <td>ISBN</td>
+                <td>状态</td>
+                <td>架位</td>
+                <td>作者</td>
+                <td>出版社</td>
+                <td>出版日期</td>
+                <td>经办人</td>
+                <td>操作</td>
+            </tr>
+
+            {% for recond in books %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ recond['Bname'] }}</td>
+                    <td>{{ recond['BID'] }}</td>
+                    <td>{{ recond['ISBN'] }}</td>
+                    <td>{{ recond['Sta'] }}</td>
+                    <td>{{ recond['Loc'] }}</td>
+                    <td>{{ recond['Author'] }}</td>
+                    <td>{{ recond['Pub'] }}</td>
+                    <td>{{ recond['Pyear'] }}</td>
+                    <td>{{ recond['Per'] }}</td>
+                    <td> <a href="{{ url_for('showBookInfo',bid=recond['BID']) }}" >修改</a> </td>
+                </tr>
+
+            {% endfor %}
+
+        </table>
+    {% endif %}
+
+{% endblock %}

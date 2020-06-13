@@ -1,0 +1,58 @@
+{#{% extends 'base.html' %}#}
+{#{% block head %}#}
+{#    <title>读者信息修改</title>#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    {% if record %}#}
+{##}
+{#        <form action="/readerupdate" method="post">#}
+{##}
+{##}
+{#            姓名<input type="text" name="rname" id="rname"  {% if record['Rname'] %}#}
+{#                      value="{{ record['Rname'] }}" {% endif %}#}
+{#                      required><br>#}
+{#            ID <input type="text" name="newid" id="newid"  {% if record['RID'] %}#}
+{#                       value="{{ record['BID'] }}" {% endif %}#}
+{#                       required><br>#}
+{#            <input type="text" name="bid" id="bid"  {% if record['RID'] %} value="{{ record['RID'] }}" {% endif %}#}
+{#                   required hidden><br>#}
+{#            电话<input type="text" name="rtel" id="rtel"  {% if record['Rtel'] %}#}
+{#                       value="{{ record['Rtel'] }}" {% endif %}#}
+{#                       required><br>#}
+{##}
+{#            邮箱<input type="text" name="rem"  id="rem"  {% if record['Rem'] %}#}
+{#                     value="{{ record['Rem'] }}" {% endif %}#}
+{#                     required><br>#}
+{##}
+{#            密码<input type="text" name="rpwd" id="rpwd"  {% if record['Rpwd'] %} value="{{ record['Rpwd'] }}" {% endif %}#}
+{#                     required><br>#}
+{#            状态<input type="text" name="normal" id="normal"  {% if record['Normal'] %}#}
+{#                     value="{{ record['Normal'] }}" {% endif %}#}
+{#                     required><br>#}
+{#            备注<input type="text" name="rmark" id="rmark"  {% if record['Rmark'] %} value="{{ record['Rmark'] }}" {% endif %}#}
+{#                      required><br>#}
+{#            罚金<input type="date" name="penalty" id="penalty"  {% if record['Penalty'] %}#}
+{#                       value="{{ record['Penalty'] }}" {% endif %}#}
+{#                       required><br>#}
+{##}
+{#            <input type="submit" name="submit" value="查询">#}
+{#        </form>#}
+{##}
+{#    {% endif %}#}
+{##}
+{#    {% if result %}#}
+{#        修改后结果如下<br>#}
+{#        图书名     {{ result.Bname }}<br>#}
+{#        图书号     {{ result.BID }}<br>#}
+{#        ISBN       {{ result.ISBN }}<br>#}
+{#        状态        {{ result.Sta }}<br>#}
+{#        架位          {{ result.Loc }}<br>#}
+{#        作者        {{ result.Author }}<br>#}
+{#        出版社       {{ result.Pub }}<br>#}
+{#        出版日期      {{ result.Pyear }}<br>#}
+{#        经办人        {{ result.Per }}<br>#}
+{##}
+{#    {% endif %}#}
+{##}
+{#{% endblock %}#}

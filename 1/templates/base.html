@@ -1,0 +1,39 @@
+{# 基本html模板 #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    {% block head %}
+        <title>图书管理系统</title>
+    {% endblock %}
+</head>
+<body>
+
+{% block content %}
+    读者管理
+    <ul>
+    <li>读者管理</li>
+    <li>借阅查询</li>
+    <li>预约查询</li>
+    </ul>
+    图书管理
+    <ul>
+    <li>图书查询</li>
+    <li>添加图书</li>
+    </ul>
+    常用功能
+    <ul>
+    <li>借阅查询</li>
+    <li>预约查询</li>
+    <li>罚金查询</li>
+    </ul>
+{% endblock %}
+
+{% block message %}{% endblock %}
+
+{% block footer %} {% endblock %}
+
+</body>
+</html>
