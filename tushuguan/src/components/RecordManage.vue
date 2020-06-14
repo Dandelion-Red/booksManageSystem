@@ -22,7 +22,7 @@
 </template>
 <script type="es6">
   export default {
-    name: 'UserManage',
+    name: 'RecordManage',
     data () {
       return {
         total: '',

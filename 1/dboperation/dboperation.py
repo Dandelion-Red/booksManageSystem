@@ -130,27 +130,25 @@ def queryborrowRecords(rid='', bid='', botime='', rbtime1='', rbtime2=''):
     result = db.session.execute(sql)
     return result
 
+def delreservationReconds(rid='', bid='', aptime1=''):
+    result = R_list.query.filter(R_list.RID == rid,R_list.BID==bid,R_list.Aptime1==aptime1).first()
+    print(result)
+    return  delt(result=result)
+
 
 # 支持多个条件同时查询
-def queryreservationReconds(rid='', isbn='', aptime1='', aptime2=''):
+def queryreservationReconds(rid='', bid='', aptime1='', aptime2=''):
     rid = rid.replace(" ", "")
-    isbn = isbn.replace(" ", "")
-    aptime1 = aptime1.replace(" ", "")
-    aptime2 = aptime2.replace(" ", "")
-    res = ''
-    sql = 'select * from r_list where 1=1 '
-    if rid == '' and isbn == '' and aptime1 == '' and aptime2 == '':
-        result = db.session.execute(sql)
-        return result
-    if rid != '' and rid != 'None':
-        sql = sql + ' and rid= ' + rid
-    if isbn != '' and isbn != 'None':
-        sql = sql + ' and isbn= ' + isbn
-    if aptime1 != '' and aptime1 != 'None':
-        sql = sql + ' and aptime1= ' + aptime1
-    if aptime2 != '' and aptime2 != 'None':
-        sql = sql + ' and aptime2= ' + aptime2
-    result = db.session.execute(sql)
+    bid = bid.replace(" ", "")
+    # aptime1 = aptime1.replace(" ", "")
+    # aptime2 = aptime2.replace(" ", "")
+    result = ''
+    if rid != '' and bid != '' and aptime1 != '':
+        result = R_list.query.filter(R_list.RID == rid, R_list.BID == bid, R_list.Aptime1 == aptime1)
+    elif rid!='' and bid!='':
+        result = R_list.query.filter(R_list.RID == rid, R_list.BID == bid)
+    elif rid != '' :
+        result = R_list.query.filter(R_list.RID == rid)
     return result
 
 
@@ -160,6 +158,7 @@ def delt(result=''):
         return False
     db.session.delete(result)
     db.session.commit()
+    return True
 
 
 # 这是SB写法
@@ -190,15 +189,15 @@ def updaterlist(value={}):
     if not value:
         print("value is null")
         return False
-    res = queryreservationReconds(rid=value['rid'], isbn=value['isbn'])
-    if not res:
+    result = queryreservationReconds(rid=value['rid'], bid=value['bid'], aptime1=value['starttime'])
+
+    if not result:
         print("update unsuccessfully in updaterlist function")
         return False
-    res.RID = value['rid']
-    res.ISBN = value['isbn']
-    res.Aptime1 = value['aptime2']
-    res.Aptime2 = value['aptime2']
-    db.session.commit()
+    for rec in result:
+        # rec = dict(rec.items())
+        rec.Aptime2 = value['newdate']
+        db.session.commit()
     return True
 
 

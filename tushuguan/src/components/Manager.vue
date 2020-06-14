@@ -13,7 +13,8 @@
           </template>
           <MenuItem name="1-1" @click.native="lookBook"><span>图书管理</span></MenuItem>
           <MenuItem name="1-2" @click.native="lookRecord"><span>借阅记录</span></MenuItem>
-          <MenuItem name="1-3" @click.native="lookReader"><span>读者管理</span></MenuItem>
+          <MenuItem name="1-3" @click.native="lookReserve"><span>预约管理</span></MenuItem>
+          <MenuItem name="1-4" @click.native="lookReader"><span>读者管理</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
@@ -30,6 +31,7 @@
         <div class="layout-content-main">
           <template id="bookManage"></template>
           <template id="recordManage"></template>
+          <template id="reserveManage"></template>
           <template id="userManage"></template>
           <component :is="currentView"></component>
         </div>
@@ -46,6 +48,7 @@
   import recordManage from '../components/RecordManage.vue'
   import userManage from '../components/UserManage.vue'
   import Button from 'iview/src/components/button/button'
+  import ReserveManage from './ReserveManage'
   export default {
     name: 'Manager',
     data () {
@@ -76,15 +79,22 @@
       lookReader () {
         this.one_nav = '主页'
         this.two_nav = '后台管理'
-        this.three_nav = '借阅记录'
+        this.three_nav = '读者管理'
         this.currentView = 'userManage'
+      },
+      lookReserve () {
+        this.one_nav = '主页'
+        this.two_nav = '后台管理'
+        this.three_nav = '预约记录'
+        this.currentView = 'reserveManage'
       }
     },
     components: {
       Button,
       bookManage: bookManage,
       recordManage: recordManage,
-      userManage: userManage
+      userManage: userManage,
+      reserveManage: ReserveManage
     }
   }
 </script>

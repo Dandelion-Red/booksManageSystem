@@ -101,7 +101,7 @@
 </template>
 <script type="es6">
   export default {
-    name: 'UserManage',
+    name: 'BookManage',
     data () {
       return {
         //查询到的数据总数

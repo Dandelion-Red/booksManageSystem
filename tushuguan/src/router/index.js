@@ -14,8 +14,8 @@ import RecordManage from '../components/RecordManage'
 import UserManage from '../components/UserManage'
 // import MyRecord from '../components/MyRecord'
 // import SearchBook from '../components/SearchBook'
-// import Reader from '../components/Reader'
 import BookManage from '../components/BookManage'
+import ReserveManage from '../components/ReserveManage'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -51,10 +51,10 @@ export default new Router({
     //   path: '/searchBook',
     //   component: SearchBook
     // },
-    // {
-    //   path: '/reader',
-    //   component: Reader
-    // },
+    {
+      path: '/reserveManage',
+      component: ReserveManage
+    },
     {
       path: '/bookManage',
       component: BookManage

@@ -39,19 +39,98 @@ def npm():
     return redirect('http://localhost:8080/__webpack_hmr')
 
 
-@app.route('/reserveRrecord/<rid>/', methods=['GET', 'POST'])
-def reserveRrecord(rid=''):
-    from dboperation.dboperation import queryreservationReconds
-    res = queryreservationReconds(rid)
-    render_template('bookreserve.html', res=res)
+@app.route('/reserveRrecord', methods=['GET', 'POST'])
+def reserveRrecord():
+    from dboperation.dboperation import queryreservationReconds, queryAccordingToID
+    ans = []
+    rec={}
+    if request.method == 'POST':
+        rid = request.form['rid']
+        print('rid=',rid)
+        if rid:
+            result = queryreservationReconds(rid=rid)
+            print(result)
+            for record in result:
+                print("进入result!:")
+                # rec = dict(rec.items())
+                temp1 = queryAccordingToID('book', record.BID)
+                print('='*50)
+                # print('rec[bid]=',rec['BID'])
+                print('=' * 50)
+                temp2 = queryAccordingToID('pbook', temp1.ISBN)
+                rec['BID'] = record.BID
+                rec['Bname'] = temp2.Bname
+                rec['RID'] = rid
+                if record.Status:
+                    rec['Status'] = '预约满足，请自取'
+                else:
+                    rec['Status'] = '预约中'
+                rec['Aptime1'] = record.Aptime1
+                rec['Aptime2'] = record.Aptime2
+                ans.append(copy.deepcopy(rec))
+            print(ans)
+            ans_data = {
+                'reserveRrecord': ans,
+                'status': 'ok'
+            }
+            return jsonify(ans_data)
+    ans_data = {
+        'reserveRrecord': '',
+        'status': 'failed'
+    }
+    return jsonify(ans_data)
 
 
-@app.route('/updateRecord/<rid>/<bid>/<dt>', methods=['GET', 'POST'])
-def updateRecord(rid, bid, dt):
-    print(rid)
-    print(bid)
-    print(dt)
-    return render_template('borrowHistory.html')
+@app.route('/updateReserve', methods=['GET', 'POST'])
+def updateReserve():
+    from dboperation.dboperation import updaterlist
+    import datetime
+    ans = {}
+    if request.method == 'POST':
+        ans['rid'] = request.form['rid']
+        ans['bid'] = request.form['bid']
+        ans['newdate']=request.form['newdate']
+        ans['starttime']=request.form['starttime']
+        print(ans['starttime'])
+        ans['starttime'] = datetime.datetime.strptime(ans['starttime'], '%Y-%m-%d')
+        print(ans['starttime'])
+        if updaterlist(ans):
+            ans_data={
+                'status': 'ok',
+                'reserveRrecord':ans,
+            }
+            return jsonify(ans_data)
+    ans_data = {
+        'status': 'failed',
+        'reserveRrecord': ans,
+    }
+    return jsonify(ans_data)
+
+@app.route('/delReserve', methods=['GET', 'POST'])
+def delReserve():
+    from dboperation.dboperation import queryreservationReconds,delreservationReconds
+    import datetime
+    value = {}
+    if request.method == 'POST':
+        value['rid'] = request.form['rid']
+        value['bid'] = request.form['bid']
+        value['starttime']=request.form['starttime']
+        value['starttime'] = datetime.datetime.strptime(value['starttime'], '%Y-%m-%d')
+        print(type(value['starttime']))
+        print(value['starttime'])
+        # ans = queryreservationReconds(rid=value['rid'], bid=value['bid'], aptime1=value['starttime'])
+        # for rec in ans:
+        #     print(rec)
+        if delreservationReconds(rid=value['rid'],bid=value['bid'],aptime1=value['starttime']):
+            ans_data={
+                'status':'ok',
+            }
+            return jsonify(ans_data)
+    ans_data = {
+        'status': 'failed',
+    }
+    return jsonify(ans_data)
+
 
 
 @app.route('/readerNote/<rid>', methods=['GET', 'POST'])
@@ -580,13 +659,13 @@ def borrowReconds(rid='', bid='', botime='', rbtime1='', rbtime2=''):
         rec['ISBN'] = temp2.ISBN
         rec['Bname'] = temp2.Bname
         if not rec['Rbtime2']:
-            rec['Condi']='未归还'
+            rec['Condi'] = '未归还'
             if rec['Rbtime1'] > datetime.datetime.now():
                 rec['Condi'] = '已超期'
-            rec['Rbtime2'] =rec['Condi']
+            rec['Rbtime2'] = rec['Condi']
         else:
             if rec['Penalty']:
-                rec['Condi'] = '罚金'+str(rec['Penalty'])
+                rec['Condi'] = '罚金' + str(rec['Penalty'])
         ans.append(copy.deepcopy(rec))
         # print(type(rec))
     print("================================================================================")

@@ -92,12 +92,13 @@ class BR_list(db.Model):
 class R_list(db.Model):
     __tablename__ = "R_list"
     RID = db.Column(db.String(4), db.ForeignKey('Reader.RID'), primary_key=True, nullable=False)
-    ISBN = db.Column(db.String(10), db.ForeignKey('PBook.ISBN'), primary_key=True, nullable=False)
+    BID = db.Column(db.String(4), db.ForeignKey('Book.BID'), primary_key=True, nullable=False)
+    Status = db.Column(db.Boolean, default=False, nullable=False)
     Aptime1 = db.Column(db.DateTime, default=datetime.datetime.now, nullable=False)
     Aptime2 = db.Column(db.DateTime, default=datetime.datetime.now() + datetime.timedelta(days=10), nullable=False)
     # 非属性
     Reader_R = db.relationship('Reader', backref=db.backref('Reader_R'))  # 没用的
-    PBook_R = db.relationship('PBook', backref=db.backref('PBook_R'))  # 没用的
+    # PBook_R = db.relationship('PBook', backref=db.backref('PBook_R'))  # 没用的
 
 
 class R_sta(db.Model):

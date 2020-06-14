@@ -5,7 +5,11 @@ import App from './App'
 import router from './router'
 import Global from './components/util/Global'
 // import locale from 'element-ui/lib/locale/lang/zh-CN'
+import moment from 'moment'
 
+Vue.filter('dateFormat', function (dateStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  return moment(dateStr).format(pattern)
+})
 // import Moment from 'moment'
 // Vue.prototype.moment = Moment
 Vue.prototype.GLOBAL = Global
@@ -21,5 +25,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })
