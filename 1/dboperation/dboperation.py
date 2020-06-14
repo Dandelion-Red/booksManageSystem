@@ -2,6 +2,34 @@
 from model.model import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
+def queryset():
+    ans_data={}
+    result = Setting_set.query.filter(Setting_set.SEname == '罚金单价').first()
+    ans = Setting_set.query.filter(Setting_set.SEname == '预约天数').first()
+    res = Setting_set.query.filter(Setting_set.SEname == '借阅天数').first()
+    if result:
+        ans_data['cost']=result.SEvalue
+    if ans:
+        ans_data['borrowdays']=ans.SEvalue
+    if res:
+        ans_data['reservedays']=res.SEvalue
+    return ans_data
+
+def upsetting(value={}):
+    if value:
+        result = Setting_set.query.filter(Setting_set.SEname == '罚金单价').first()
+        result.SEvalue=value['cost']
+        db.session.commit()
+        ans = Setting_set.query.filter(Setting_set.SEname == '预约天数').first()
+        ans.SEvalue=value['reservedays']
+        db.session.commit()
+        res = Setting_set.query.filter(Setting_set.SEname == '借阅天数').first()
+        res.SEvalue=value['borrowdays']
+        db.session.commit()
+        return True
+    return False
+
+
 
 def delnum(isbn):
     res = queryAccordingToID('pbook', isbn)

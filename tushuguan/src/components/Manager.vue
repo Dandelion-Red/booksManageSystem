@@ -15,6 +15,7 @@
           <MenuItem name="1-2" @click.native="lookRecord"><span>借阅记录</span></MenuItem>
           <MenuItem name="1-3" @click.native="lookReserve"><span>预约管理</span></MenuItem>
           <MenuItem name="1-4" @click.native="lookReader"><span>读者管理</span></MenuItem>
+          <MenuItem name="1-5" @click.native="lookSetting"><span>设置</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
@@ -33,6 +34,7 @@
           <template id="recordManage"></template>
           <template id="reserveManage"></template>
           <template id="userManage"></template>
+          <template id="setting"></template>
           <component :is="currentView"></component>
         </div>
       </div>
@@ -49,6 +51,7 @@
   import userManage from '../components/UserManage.vue'
   import Button from 'iview/src/components/button/button'
   import ReserveManage from './ReserveManage'
+  import Setting from './Setting'
   export default {
     name: 'Manager',
     data () {
@@ -87,6 +90,12 @@
         this.two_nav = '后台管理'
         this.three_nav = '预约记录'
         this.currentView = 'reserveManage'
+      },
+      lookSetting () {
+        this.one_nav = '主页'
+        this.two_nav = '后台管理'
+        this.three_nav = '设置'
+        this.currentView = 'setting'
       }
     },
     components: {
@@ -94,7 +103,8 @@
       bookManage: bookManage,
       recordManage: recordManage,
       userManage: userManage,
-      reserveManage: ReserveManage
+      reserveManage: ReserveManage,
+      setting: Setting
     }
   }
 </script>

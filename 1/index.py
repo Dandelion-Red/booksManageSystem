@@ -39,6 +39,41 @@ def npm():
     return redirect('http://localhost:8080/__webpack_hmr')
 
 
+
+@app.route('/querySetting', methods=['GET', 'POST'])
+def querySetting():
+    from dboperation.dboperation import queryset
+    res = queryset()
+    ans_data={
+        'status': 'ok',
+        'cost': res['cost'],
+        'borrowdays': res['borrowdays'],
+        'reservedays': res['reservedays'],
+    }
+    return jsonify(ans_data)
+
+
+@app.route('/updateSetting', methods=['GET', 'POST'])
+def updateSetting():
+    from dboperation.dboperation import upsetting
+    value={}
+    if request.method == 'POST':
+        value['cost'] = request.form['cost']
+        value['borrowdays'] = request.form['borrowdays']
+        value['reservedays'] = request.form['reservedays']
+        if upsetting(value):
+            ans_data={
+                'status': 'ok',
+                'cost':value['cost'],
+                'borrowdays':value['borrowdays'],
+                'reservedays':value['reservedays'],
+            }
+            return jsonify(ans_data)
+        ans_data={
+            'status': 'failed',
+        }
+        return jsonify(ans_data)
+
 @app.route('/reserveRrecord', methods=['GET', 'POST'])
 def reserveRrecord():
     from dboperation.dboperation import queryreservationReconds, queryAccordingToID
@@ -622,7 +657,9 @@ def readerQuery(rid='', rname=''):
             print(rec)
             result = queryAccordingToID('reader', rec.RID)
             ans = queryAccordingToID('r_sta', rec.RID)
-            note = getNote(ans.Remark)
+            note=''
+            if ans:
+                note = getNote(ans.Remark)
             reader['RID'] = result.RID
             reader['Rname'] = result.Rname
             reader['Rtel'] = result.Rtel
